@@ -30,7 +30,7 @@ namespace DesafioWM.API.Controllers
         public async Task<ActionResult<bool>> InsertAnuncio(AnuncioModel model) => CustomResponse(await _anuncioApplicationService.InserirAnuncio(model));
         
         [HttpPut]
-        public async Task<ActionResult<bool>> UpdateAnuncio(AnuncioModel model) => CustomResponse(await _anuncioApplicationService.InserirAnuncio(model));
+        public async Task<ActionResult<bool>> UpdateAnuncio(AnuncioModel model) => CustomResponse(await _anuncioApplicationService.AtualizarAnuncio(model));
 
         [HttpDelete]
         public async Task<ActionResult<bool>> DeleteAnuncio(int id) => CustomResponse(await _anuncioApplicationService.DeletarAnuncio(id));

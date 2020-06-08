@@ -1,17 +1,20 @@
 ﻿using DesafioWM.Domain.AppServices.Anuncio;
 using DesafioWM.Domain.Entities;
 using DesafioWM.Domain.Models.Anuncio;
+using DesafioWM.Domain.Notification.Interfaces;
 using DesafioWM.Domain.Repository.Anuncio;
+using DesafioWM.Infra.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DesafioWM.ApplicationService
 {
-    public class AnuncioApplicationService : IAnuncioApplicationService
+    public class AnuncioApplicationService : BaseService,  IAnuncioApplicationService
     {
         private readonly IAnuncioRepository _anuncioRepository;
-        public AnuncioApplicationService(IAnuncioRepository anuncioRepository)
+        public AnuncioApplicationService(IAnuncioRepository anuncioRepository,
+            INotification notification) : base(notification)
         {
             _anuncioRepository = anuncioRepository;
         }
@@ -48,12 +51,28 @@ namespace DesafioWM.ApplicationService
 
         public async Task<bool> AtualizarAnuncio(AnuncioModel model)
         {
-            var newAnuncio = FillRequestModel(model);
-            return true;
+            var oldRegister = _anuncioRepository.BuscarPorId(model.Id).Result;
+            if (oldRegister != null)
+            {
+                var anuncioAtualizado = FillRequestModel(model);
+                await _anuncioRepository.Atualizar(anuncioAtualizado);
+                return true;
+            }
+            else
+            {
+                Notificar("Não foi encontrado nenhum registro com o Id informado para atualizar");
+                return false;
+            }
         }
         public async Task<bool> DeletarAnuncio(int id)
         {
-
+            var register = _anuncioRepository.BuscarPorId(id).Result;
+            if (register == null)
+            {
+                Notificar("Não foi encontrado nenhum registro com o Id informado para atualizar");
+                return false;
+            }
+            await _anuncioRepository.Remover(id);
             return true;
         }
         private List<AnuncioModel> FillResultModel(List<AnuncioEntity> response)
