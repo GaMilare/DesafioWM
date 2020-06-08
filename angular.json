@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "WMProject"
+    }
+  },
+  "defaultProject": "WMProject",
+  "cli": {
+    "analytics": false
+  }
 }
