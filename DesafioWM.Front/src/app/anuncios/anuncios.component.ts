@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 export class AnunciosComponent implements OnInit {
   
   public anuncioForm: FormGroup;
-  public titulo = 'Anuncios';
+  public titulo = 'Anúncios';
   public anuncioSelecionado: Anuncio;
   
   public fabricanteSelecionado: FabricanteModel;
