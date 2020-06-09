@@ -6,6 +6,7 @@ import { FabricanteModel } from '../models/FabricanteModel';
 import { ModelosModel } from '../models/ModelosModel';
 import { Anuncio } from '../models/Anuncio';
 import { VersaoModel } from '../models/VersaoModel';
+import { BaseResponse } from '../models/BaseResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,12 @@ export class AnunciosService {
   wmBaseUrl = environment.wmBaseUrl;
   baseUrl = environment.apiBaseUrl;
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { } 
   
   
-  // getAll() {
-  //   return this.http.get("");
-  // }
+  getAll() : Observable<BaseResponse<Anuncio[]>> {
+    return this.http.get<BaseResponse<Anuncio[]>>(`${this.baseUrl}/api/Anuncios/GetAll`);
+  }
   
   getManufacturer(): Observable<FabricanteModel[]> {
     return this.http.get<FabricanteModel[]>(`${this.wmBaseUrl}/api/OnlineChallenge/Make`);
@@ -32,17 +33,17 @@ export class AnunciosService {
   getVersionByModelId(id: number): Observable<VersaoModel[]>{
     return this.http.get<VersaoModel[]>(`${this.wmBaseUrl}/api/OnlineChallenge/Version?ModelID=${id}`);
   }
-  
-  // getByAll(id: number) {
-  //   return this.http.get("url/${id}");
-  // }
-  
-  post(anuncio: Anuncio){
-    return this.http.post(`${this.baseUrl}`, anuncio);
+    
+  post(anuncio: Anuncio) : Observable<BaseResponse<boolean>> {
+    return this.http.post<BaseResponse<boolean>>(`${this.baseUrl}/api/Anuncios`, anuncio);
   }
   
-  put(id:number, anuncio: Anuncio){
-    return this.http.put(`${this.baseUrl}/${id}`, anuncio);
+  put(anuncio: Anuncio): Observable<BaseResponse<boolean>> {
+    return this.http.put<BaseResponse<boolean>>(`${this.baseUrl}/api/Anuncios`, anuncio);
+  }
+
+  delete(id: number): Observable<BaseResponse<boolean>> {
+    return this.http.delete<BaseResponse<boolean>>(`${this.baseUrl}/api/Anuncios?id=${id}`);
   }
   
 }

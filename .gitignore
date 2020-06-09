@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/DesafioWM.API/.vs/DesafioWM.API/v16/Server/sqlite3
+/.vs/slnx.sqlite

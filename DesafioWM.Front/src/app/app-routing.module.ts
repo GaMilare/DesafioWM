@@ -5,9 +5,8 @@ import { VitrineComponent } from './vitrine/vitrine.component';
 
 
 const routes: Routes = [
-  {path: '', redirectTo: 'vitrine', pathMatch: 'full' },
-  {path:'anuncios', component: AnunciosComponent },
-  {path:'vitrine', component: VitrineComponent}
+  {path: '', redirectTo: 'anuncios', pathMatch: 'full' },
+  {path:'anuncios', component: AnunciosComponent }
 ];
 
 @NgModule({

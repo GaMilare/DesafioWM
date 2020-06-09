@@ -2,7 +2,12 @@
     <div class="col-sm-6" *ngIf="anuncioSelecionado">
         <div class="row">
             <div class="mr-auto mt-2">
-                <app-titulo [titulo]="'Anuncio: ' + anuncioSelecionado.id"></app-titulo>
+                <ng-container *ngIf="anuncioSelecionado.id != 0">
+                    <app-titulo [titulo]="'Anuncio: ' + anuncioSelecionado.id"></app-titulo>
+                </ng-container>
+                <ng-container *ngIf="anuncioSelecionado.id == 0">
+                    <app-titulo [titulo]="'Anuncio: Novo Anuncio'"></app-titulo>
+                </ng-container>
             </div>
             <div class="mt-2">
                 <button class="btn btn-outline-danger" (click)="voltar()">Fechar</button>
@@ -15,9 +20,9 @@
                     <input type="text" class="form-control" formControlName="marca"> -->
                     <label for="marca">Marca</label>  
                     <div>
-                        <select formControlName="marca" #marcaSelect (change)="buscarModelo(marcaSelect.value)">
+                        <select formControlName="marca" class="form-control" #marcaSelect (ngModelChange)="buscarModelo($event)">
                             <option [ngValue]="anuncioSelecionado.marca" disabled>{{anuncioSelecionado.marca}}</option>
-                            <option *ngFor="let fab of fabricantes" [value]="fab.ID">
+                            <option *ngFor="let fab of fabricantes" [ngValue]="fab">
                                 {{fab.Name}}
                             </option>
                         </select> 
@@ -26,9 +31,9 @@
                 <div class="form-group">
                     <label for="Modelo">Modelo</label>  
                     <div>
-                        <select formControlName="modelo" #modeloSelect (change)=buscarVersao(modeloSelect.value)>
+                        <select formControlName="modelo" class="form-control" (ngModelChange)=buscarVersao($event)>
                             <option [ngValue]="anuncioSelecionado.modelo" disabled>{{anuncioSelecionado.modelo}}</option>
-                            <option *ngFor="let modelo of modelos" [value]="modelo.ID">
+                            <option *ngFor="let modelo of modelos" [ngValue]="modelo">
                                 {{modelo.Name}}
                             </option>
                         </select> 
@@ -37,9 +42,9 @@
                 <div class="form-group">
                     <label for="versao">Versão</label>
                     <div>
-                        <select formControlName="versao" #versaoSelect>
+                        <select formControlName="versao" class="form-control" >
                             <option [ngValue]="anuncioSelecionado.versao" disabled>{{anuncioSelecionado.versao}}</option>
-                            <option *ngFor="let versao of versoes" [value]="versao.ID">
+                            <option *ngFor="let versao of versoes" [ngValue]="versao">
                                 {{versao.Name}}
                             </option>
                         </select> 
@@ -57,7 +62,13 @@
                     <label for="observacao">Observacao</label>
                     <input type="text" class="form-control" formControlName="observacao">
                 </div>
-                <button type="submit" class="btn btn-success" [disabled]="!anuncioForm.valid">Enviar</button>
+                <ng-container *ngIf="anuncioSelecionado.id != 0">
+                    <button type="submit" class="btn btn-success" [disabled]="!anuncioForm.valid">Atualizar</button>
+                </ng-container>
+                <ng-container *ngIf="anuncioSelecionado.id == 0">
+                    <button type="submit" class="btn btn-success" [disabled]="!anuncioForm.valid">Inserir</button>
+                </ng-container>
+                
             </form>
             <br>
             
@@ -76,29 +87,29 @@
                         <th scope="col">Ano</th>
                         <th scope="col">Quilometragem</th>
                         <th scope="col">Observacao</th>
-                        <th scope="col"> </th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let carro of carros"
-                    style="cursor: pointer;" (click)="anuncioSelect(carro)">
-                    <th scope="row">{{carro.id}}</th>
-                    <td>{{carro.marca}}</td>
-                    <td>{{carro.modelo}}</td>
-                    <td>{{carro.versao}} </td>
-                    <td>{{carro.ano}}</td>
-                    <td>{{carro.quilometragem}}</td>
-                    <td>{{carro.observacao}}</td>
+                    <tr *ngFor="let anuncio of anuncios">
+                    <th scope="row">{{anuncio.id}}</th>
+                    <td>{{anuncio.marca}}</td>
+                    <td>{{anuncio.modelo}}</td>
+                    <td>{{anuncio.versao}} </td>
+                    <td>{{anuncio.ano}}</td>
+                    <td>{{anuncio.quilometragem}}</td>
+                    <td>{{anuncio.observacao}}</td>
                     <td>
                         <div>
-                            <button  class="btn btn-outline-danger">Excluir</button>
+                            <button class="btn btn-outline-primary mr-2 mb-2" (click)="anuncioSelect(anuncio)">Detalhes</button>
+                            <button  class="btn btn-outline-danger mb-2" (click)="RemoverAnuncio(anuncio.id)">Excluir</button>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
         
-        <button class="btn btn-primary" (click)="adicionarAnuncio()">Adicionar novo anuncio</button>
+        <button class="btn btn-primary" (click)="adicionarAnuncio()">Adicionar anuncio</button>
         
         
     </div>

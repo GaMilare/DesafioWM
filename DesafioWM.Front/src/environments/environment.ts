@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   wmBaseUrl: "http://desafioonline.webmotors.com.br",
-  apiBaseUrl: "",
+  apiBaseUrl: "https://localhost:44344",
 };
 
 /*

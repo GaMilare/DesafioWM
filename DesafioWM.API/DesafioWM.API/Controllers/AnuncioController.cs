@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DesafioWM.Domain.AppServices.Anuncio;
 using DesafioWM.Domain.Models.Anuncio;
 using DesafioWM.Domain.Notification.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DesafioWM.API.Controllers
@@ -34,6 +35,10 @@ namespace DesafioWM.API.Controllers
 
         [HttpDelete]
         public async Task<ActionResult<bool>> DeleteAnuncio(int id) => CustomResponse(await _anuncioApplicationService.DeletarAnuncio(id));
+        
+        [HttpGet("GetAllWithToken")]
+        [Authorize]
+        public async Task<ActionResult<List<AnuncioModel>>> GetAnunciosComToken() => CustomResponse(await _anuncioApplicationService.BuscarTodos());
 
     }
 
